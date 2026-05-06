@@ -18,4 +18,20 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  followers Follow[] @relation("followers")
+  following Follow[] @relation("following")
+}
+
+
+model Follow {
+  id           String   @id @default(uuid())
+  followerId   String
+  followingId  String
+  createdAt    DateTime @default(now())
+
+  follower     User @relation("following", fields: [followerId], references: [id])
+  following    User @relation("followers", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId]) // 🚫 prevent duplicate follows
 }
