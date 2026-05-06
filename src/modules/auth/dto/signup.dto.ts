@@ -2,11 +2,9 @@ import {
     IsEmail,
     IsNotEmpty,
     IsString,
-    Matches,
     MaxLength,
     MinLength,
 } from 'class-validator'
-
 
 export class SignupDto {
     @IsString()
@@ -23,8 +21,6 @@ export class SignupDto {
     @IsNotEmpty()
     @MinLength(6)
     @MaxLength(20)
-    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
     password!: string;
-
 
 }
