@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignupDto } from './dto/signup.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { ForgotPasswordDto } from './dto/forgot-password.dto.js';
@@ -16,6 +16,21 @@ export class AuthService {
     ) {}
 
     async signup(dto: SignupDto) {
+        const existingUser = await this.prisma.user.findFirst({
+            where: {
+                OR: [
+                { email: dto.email },
+                { username: dto.username },
+                ],
+            },
+        });
+
+        if (existingUser) {
+            throw new BadRequestException(
+                'Email or username already exists',
+            );
+        };
+
         const hashedPassword = await bcrypt.hash(dto.password, 10);
 
         const user = await this.prisma.user.create({
