@@ -1,7 +1,8 @@
-import { Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { FollowService } from './follow.service.js';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard.js';
 import { CurrentUser } from '../../common/decorators/current-user.decorator.js';
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto.js';
 
 @Controller('follow')
 export class FollowController {
@@ -27,10 +28,28 @@ export class FollowController {
 
     @Get('followers/:userId')
     @UseGuards(JwtAuthGuard)
-    getfollowers(
-        @Param('userId') targetUserId: string
+    getFollowers(
+        @Param('userId') UserId: string,
+        @Query() paginationQuery: PaginationQueryDto
     ) {
-        return this.followService.getfollwers(targetUserId)
+        return this.followService.getFollwers(UserId, paginationQuery)
+    }
+
+    @Get('following/:userId')
+    @UseGuards(JwtAuthGuard)
+    getFollowing(
+        @Param('userId') UserId: string,
+        @Query() paginationQuery: PaginationQueryDto
+    ) {
+        return this.followService.getFollwing(UserId, paginationQuery)
+    }
+
+    @Get('stats/:userId')
+    @UseGuards(JwtAuthGuard)
+    getFollowStats(
+        @Param('userId') UserId: string
+    ) {
+        return this.followService.getFollowStats(UserId)
     }
 
 }

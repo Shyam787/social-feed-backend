@@ -9,6 +9,7 @@ import { CommentModule } from './modules/comment/comment.module.js';
 import { FeedModule } from './modules/feed/feed.module.js';
 import { LoggerMiddleware } from './common/middleware/logger.middleware.js';
 import { validateEnv } from './config/env.validation.js';
+import { MongoModule } from './database/mongo/mongo.module.js';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { validateEnv } from './config/env.validation.js';
      LikeModule,
      CommentModule,
      FeedModule,
+     MongoModule,
   ],
   controllers: [],
   providers: [],
